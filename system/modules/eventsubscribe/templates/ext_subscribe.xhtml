@@ -1,0 +1,16 @@
+<div class="<?php echo $this->class; ?> block">
+ 
+  <?php if ($this->headline): ?>
+    <<?php echo $this->hl; ?>><?php echo $this->headline; ?></<?php echo $this->hl; ?>>
+  <?php endif; ?>
+  
+  <div class="eventinfo">
+	<p>Titel: <span class="ajaxTitle">Mein Titel</span></p>
+	<p>Start: <span class="ajaxStartDate">Mein Startdatum</span></p>
+	<p>Ort: <span class="ajaxField_location_city">Meine Stadt</span></p>
+	<p>Preis: <span class="ajaxPrice">Mein Preis</span> <span class="ajaxPriceInfo">Meine Info</span></p>
+  </div>
+  
+  <?php echo $this->getForm($this->formId); ?>
+ 
+</div>

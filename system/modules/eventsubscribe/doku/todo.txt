@@ -1,0 +1,3 @@
+Zukünftig: Dafür Interface in zwei Ebenen aufteilen:
+1. Ebene: Auflistung aller Events, Konfiguration für jedes Event individuell?
+2. Ebene: Auflistung aller Anmeldungen für das Event

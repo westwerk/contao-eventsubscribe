@@ -1,0 +1,43 @@
+
+<div class="event layout_full block<?php echo $this->class; ?>">
+
+  <h4><?php echo $this->title; ?></h4>
+
+  <?php if ($this->recurring): ?>
+    <p class="recurring"><?php echo $this->recurring; if ($this->until): ?> <?php echo $this->until; endif; ?>.</p>
+  <?php endif; ?>
+  
+  <?php if($this->teaser): ?>
+  	<?php echo $this->teaser; ?>
+  <?php endif; ?>
+  <p><strong>jeweils <?php echo date('G:i', $this->startTime) ?> bis <?php echo date('G:i', $this->endTime) ?></strong></p>
+
+  <?php if($this->field_location_street): ?>
+	<strong>Ort:</strong>
+	<p class="location">
+		<?php echo $this->field_location_name; ?><br />
+		<?php echo $this->field_location_street; ?><br />
+		<?php echo $this->field_location_zip; ?> <?php echo $this->field_location_city; ?>
+	</p>
+  <?php endif; ?>
+  
+  <?php if($this->price_whole): ?>
+	<strong>Kosten:</strong>
+	<p class="price">
+		<?php echo $this->price_whole; ?>,<?php if($this->price_fraction): echo $this->price_fraction ?><?php else: ?>-<?php endif; ?>€ <?php echo $this->price_info; ?>
+	</p>
+  <?php endif; ?>
+
+  <?php if ($this->details): ?>
+    <?php echo $this->details; ?>
+  <?php endif; ?>
+
+  <?php if ($this->enclosure): ?>
+    <div class="enclosure">
+      <?php foreach ($this->enclosure as $enclosure): ?>
+        <p><img src="<?php echo $enclosure['icon']; ?>" width="18" height="18" alt="<?php echo $enclosure['mime']; ?>" class="mime_icon"> <a href="<?php echo $enclosure['href']; ?>" title="<?php echo $enclosure['title']; ?>"><?php echo $enclosure['link']; ?> <span class="size">(<?php echo $enclosure['filesize']; ?>)</span></a></p>
+      <?php endforeach; ?>
+    </div>
+  <?php endif; ?>
+
+</div>

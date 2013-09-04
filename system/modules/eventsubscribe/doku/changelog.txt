@@ -1,0 +1,118 @@
+# Version 0.55 ~ Thomas Belkowski
+
+SimpleAjax wurde als Extension eingebunden (ALS VORAUSSETZUNG DEFINIEREN!!!) und das Dropdown mit Ajax so erweitern, dass bei der Eventauswahl direkt die richtigen Daten ausgegeben werden können. Entsprechende Platzhalter wurden eingebunden.
+
+Sämtliche Daten rund um die E-Mail werden nun eine Insatz höher definiert, da sie für alle einzelnen Events eines Kalenders identisch sein dürften (Usability).
+Vor und nach dem Datenblock in der E-Mail an den Subscriber kann nun individuell Text eingefügt werden.
+
+### ~ ###
+
+# Version 0.50 ~ Thomas Belkowski
+
+Unter den Auflistungen der Events wird nun ein "Jetzt Anmelden" link angezeigt. Diese führt auf eine Definierte Seite, die man im Backend im calendar (übergeordnete Ebene der einzelenen Events) festlegen kann. Als GET-Parameter wird die entsprechende eventId übergeben, sodass im Formular bereits das richtige Event automatisch ausgewählt wird.
+
+Das Formular selber wurde nun in ein Front-End Modul verpackt, in welchem man bei mehreren Event-Subscribe-Formularen zur Not das richtige Formular auswählen kann.
+
+### ~ ###
+
+# Version 0.45 ~ Thomas Belkowski
+
+Implementierung der Mini-Extension calendarextevents:
+Erweiterung der Tabelle um Felder zu dem Veranstalungsort und den Kosten
+
+Eigenes Template(html5 & xhtml)
+Eigenes Event-Template jetzt auch in der dropdown-Auswahl für das Event-Modul eingebunden.
+
+### ~ ###
+
+# Version 0.40 ~ Thomas Belkowski
+
+Ob ein Formular die Extension nutzt und die Validierungsform kann nun beim Erstellen des Formulars selber ausgewählt werden.(wie in 0.35 geplant)
+
+Insert-Tags wurden überarbeitet,
+
+Allgemeine Überarbeiteung der Klasse EventSubscribe nach dem AUDIT.
+
+Bei der Anmeldung: Dropdown, in dem alle kommenden Events angezeigt werden.
+
+### ~ ###
+
+# Version 0.35 ~ Thomas Belkowski
+
+Validierung, um Doppelanmeldungen zu verhindern.
+Dazu soll der Formulargenerator um eine Spalte und Input-Felder erweitert werden, sodass explizit ausgewählt werden kann, welche Informationen nur einmal vorkommen dürfen pro Eventanmeldung sind. 
+
+Die wählbaren Modi:
+
+1 - keine Überprüfung auf doppelte Anmeldung
+2 - Überprüfung auf Name
+3 - Überprüfung auf E-Mail
+4 - Überprüfung auf Name & E-Mail
+
+### ~ ###
+
+# Version 0.30 ~ Thomas Belkowski
+
+insert tags erstellt, die mit der Session verbunden sind. 
+Unter der Kategorie {{subscribe:: sind folgende Optionen verfügbar:
+
+name
+street
+zip
+city
+fon
+email
+eventId
+event	// Ermittelt anhand der EventId den Event-Titel
+
+- templates-Ordner und module-Ordner gelöscht, da falsch an dieser Stelle
+- eigener Namespace hinzugefügt
+
+### ~ ###
+
+# Version 0.25 ~ Thomas Belkowski
+
+Zunächst: Einstellungen im Event selber speichern, dafür die Event-Tabelle erweitern.
+
+1. $MailOwner - standardmäßig der author des Events, optional änderbar
+2. $MailSystem  - mit welcher Mail-Adresse soll versendet werden?
+3. $MailSystemName - Name des Absenders.
+
+### ~ ###
+
+# Version 0.2 ~ Thomas Belkowski
+
+Damit dieses Modul funktioniert, muss über den Formulargenerator von Contao ein Formular mit folgenden Eigenschaften erstellt werden:
+Title: EventSubscribe (damit der Hook aktiviert wird) 
+Feldnamen: name, street, zip, city, fon, email, eventId
+
+Weshalb wird kein FrontEnd-Modul dafür erstellt?
+1. Codeminimierung: Weshalb ein Formular aufbauen - inklusive Eingabeprüfung - , wenn eine entsprechende Funktionalität bereits vorhanden ist?
+2. Einfachere Administrierung und Wartung, da das Formular über das gewohnte Interface erstellt wird und auch Pflichtfelder auf diese Art und Weise frei gewählt werden können.
+
+Hook, getriggert durch ProcessFormData:
+
+1. Prüfen, ob es sich um das richtige Formular (anhand des Titels) handelt.
+2. Felder aus dem Formular in die Tabele tl_calendar_events_subscribe schreiben
+3. Versenden einer E-Mail mit allen Daten an den Besitzer
+4. Versenden einer Bestätigungs-E-Mail ab den Absender
+
+### ~ ###
+
+# Version 0.1 ~ Thomas Belkowski
+
+Einziger Sinn und Zweck ist bisher die Generierung einer neuen Tabelle für die Anmeldung von Events:
+
+tl_calendar_events_subscribe
+
+mit den Spalten:
+
+Id 		| Eindeutige Identifikation des Anmelders
+tstamp		| Timestamp
+name		| Name
+street		| Straße
+zip		| PLZ
+city		| Stadt
+fon		| Telefon-Nummer
+email		| E-Mail Adresse
+eventId		| die id des Events aus der Tabelle tl_calendar_events 
