@@ -1,0 +1,106 @@
+### Installation ###
+
+1. Voraussetzung: Extension "simple_ajax"
+
+2. eventsubscribe installieren
+
+3. Datenbank aktualisieren 
+(inkl. ALTER TABLE `tl_calendar_events` DROP `location`;)
+
+### Einrichtung der Grundlegenden Event-Daten ###
+
+(0. evt. Weiterleitungsseite erstellen: Infos Bestätigungs-Seite unter Punkt 8.)
+
+1. Ein Kalender mit dem EventSubscribe:
+
+- Events -> Neuer Kalender
+- Anmeldungen für Events über die Checkbox aktivieren.
+- (optional) Angabe der Seite mit dem Formular //Wird für den "Jetzt Anmelden"-Link unter den Event-Beschreibungen benötigt
+- Machen Sie Angaben zu den Bestätigungs-Emailadressen:
+	- An welche E-Mail sollen alle Anmeldungen geschickt werden?
+	- Welche E-Mail-Adresse soll angezeigt werden? Z. B. hallo@westwerk.ac
+	- Wie soll der Absender-Name lauen? Z. B. "Event Manager"
+	- Die E-Mail an den Anmelder gliedert sich in drei Unterpunkte: 
+		1. Beginn der E-Mail, der mit einem Freitext von Ihnen befüllt werden sollte.
+		2. Datenblock zum Event und die Wiedergabe der angegebenen Daten.
+		3. Ende der E-Mail, der mit einem Freitext von Ihnen befüllt werden sollte.
+- Speichern und schließen
+
+2. Erstellen Sie ein neues Event:
+
+- Events -> {Name_Ihres_Kalenders} -> Neues Event
+- Füllen Sie die üblichen Daten aus
+- Zusätzliche Felder sind:
+	- Anmeldeschluss: Datum
+	- Genauere Angaben zum Veranstaltungsort: Name, Straße, PLZ, Stadt
+	- Angaben zu den Kosten
+(- vergessen Sie nicht das Event bei Bedarf zu veröffentlichen)
+- Speichern (bzw. und schließen / und neu)
+
+
+### Einrichtung für das FrontEnd ###
+//Bis hier hin sind nun die wichtigsten Daten angegeben. Ab jetzt geht es um die Implementierung im Front-End
+
+3. Erstellen eines Moduls für die Wiedergabe der (erweiterten) Event-Daten mit dem "Jetzt Anmelden"-Link
+- Themes -> {Ihr_Theme_Name} -> "Die Frontend-Module des Theme ID X bearbeiten" -> Neues Modul
+- Wählen Sie als Modultyp: "Eventliste"
+- Wählen Sie den / die entsprechenden Kalender
+- Wählen Sie die üblichen Optionen
+- Wählen Sie unter Template-Einstellungen -> "Event-Template" die Option: "event_fullextended"
+- Speichern und schließen
+
+Nun können sie dieses Modul wie gewohnt an beliebiger Stelle einbinden.
+
+4. Erstellen der Anmeldeformulars
+//Aus vielerlei Gründen nutzen wir für die Anmeldungen direk den Formulargenerator
+- Formulargenerator -> Neues Formular
+- Zusätzlich zu den üblichen Feldern wählen Sie unter "Formular-Konfiguration" bei der Frage: "Handelt es sich um eine Eventanmeldung?" auf Ja
+- Wählen Sie, ob bzw. nach welchen Kriterien Doppelanmeldungen verhindert werden sollen.
+(Die Option: "Daten per E-Mail versenden muss nicht aktiviert werden, da dieser Punkt bereits vorher abgedeckt wurde)
+- Speichern und schließen
+
+5. Erstellen der Felder für das Anmeldeformular
+//Bitte erstellen Sie GENAU diese acht Felder mit genau den angebenen Typen & Namen 
+//(sämtliche weitere Einstellungen sind von Ihnen frei wählbar):
+//Die Positionierung ist Ihnen überlassen
+
+	- 1 x Feldtyp: Event-Menü (DB) mit dem Feldname: eventId
+	- 6 x Feldtyp: Textfeld mit den Feldnamen: name, street, zip, city, fon, email
+	- 1 x Feldtyp: Absendefeld
+
+6. Einbetten des Anmeldeformulars in ein erweiterndes Modul
+//In diesem Modul werden über Ajax die Eckdaten der Veranstaltung bei der Wahl direkt über dem Formular eingeblendet.
+- Themes -> {Ihr_Theme_Name} -> "Die Frontend-Module des Theme ID X bearbeiten" -> Neues Modul
+- Wählen sie als Modultyp: Eventsubscribe Modul.
+- Wählen Sie unter Modul-Konfiguration / Anmeldeformular das eben erstellte Formular.
+- Speichern und schließen
+
+7. (optional) Bearbeiten des Templates für das eben erstellte Modul (Modultyp: "EventSubscribe Modul")
+- Templates -> neues Template
+- Originaltemplate: ext_subscribe.html5
+- Template erstellen
+
+Anschließend können Sie unter "Die Datei "..." bearbeiten die Ausgabe im Frontend bearbeiten bzw. Text hinzufügen.
+Hierbei wird z.B. <span class="ajaxPrice">Mein Preis</span> im Frontend direkt durch den Preis über Ajax ersetzt.
+
+### Abschließend ###
+
+Nun müssen Sie nur noch die erstellten Module in Ihrer Seite an beliebiger Stelle einbinden.
+Sollten Ihnen Fehler auffallen oder Wünsche haben, wenden Sie sich gerne an uns.
+
+### Zusätzliches ###
+
+8. (optional) Bestätigungsseite nach erfolgreicher Anmeldung:
+Wenn Sie in Ihrem Formular als Weiterleitungsseite eine positive Bestätigung an den User einfügen möchten, stehen Ihnen auf dieser Seite folgende Insert-Tags dafür zur Verfügung:
+
+### Inhalte des Formulars ###
+{{subscribe::name}}
+{{subscribe::street}}
+{{subscribe::zip}}
+{{subscribe::city}}
+{{subscribe::fon}}
+{{subscribe::email}}
+{{subscribe::eventId}}
+
+### Zusatz ###
+{{subscribe::event}}	//Ermittelt den Titel des Events aus der DB anhand der eventId
