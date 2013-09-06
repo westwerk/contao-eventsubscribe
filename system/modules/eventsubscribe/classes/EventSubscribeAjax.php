@@ -26,12 +26,11 @@ class EventSubscribeAjax extends \System{
 			{
 				$result['title'] = $res->title;
 				$result['startDate'] = date('d.m.Y', $res->startDate);
-				$result['field_location_city'] = $res->field_location_city;
+				$result['field_location_city'] = $res->location_city;
 				$result['price'] = "";
 				$result['price'] .= $res->price_whole.",";
 				if($res->price_fraction <= 9){$result['price'] .= "0".$res->price_fraction;}else{$result['price'] .= $res->price_fraction;}
-				$result['price_info'] = $res->price_info;
-				
+				$result['price_info'] = $res->price_info;				
 			}else{
 				$result['error'] = "Das angeforderte Event wurde nicht gefunden.";
 			}			

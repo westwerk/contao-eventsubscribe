@@ -27,6 +27,8 @@ $GLOBALS['TL_LANG']['tl_calendar']['postmailtext'][1] = 'Abschließende Worte am
 /**
  * Bestätigungs-E-Mails
  */
-$GLOBALS['TL_LANG']['tl_calendar']['title_form_jump'] = 'Weiterleitung zum Anmeldeformular';
+$GLOBALS['TL_LANG']['tl_calendar']['title_EventSubscribe'] = 'Anmeldungen für Events';
+$GLOBALS['TL_LANG']['tl_calendar']['useEventSubscribe'][0] = 'Sollen Anmeldungen möglich sein?';
+$GLOBALS['TL_LANG']['tl_calendar']['useEventSubscribe'][1] = '';
 $GLOBALS['TL_LANG']['tl_calendar']['subscribejumpTo'][0] = 'Auf welcher Seite befindet sich das Anmeldeformular?';
 $GLOBALS['TL_LANG']['tl_calendar']['subscribejumpTo'][1] = 'Der "Jetzt Anmelden"-Link soll auf welche Seite zum Formular führen?';

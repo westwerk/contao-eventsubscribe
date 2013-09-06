@@ -8,14 +8,25 @@
  * @author  Thomas Belkowski / WESTWERK GmbH & Co. KG
  * @license LGPL
  */
- 
+
 //BackEnd
-$GLOBALS['TL_DCA']['tl_calendar']['palettes']['default'] = str_replace('jumpTo;','jumpTo; {title_subscribemail}, mailowner, mailsystem, mailsystemname, praemailtext, postmailtext; {title_form_jump},subscribejumpTo;', $GLOBALS['TL_DCA']['tl_calendar']['palettes']['default']);
+$GLOBALS['TL_DCA']['tl_calendar']['palettes']['__selector__'][] = 'useEventSubscribe';
+$GLOBALS['TL_DCA']['tl_calendar']['palettes']['default'] = str_replace('jumpTo;','jumpTo; {title_EventSubscribe}, useEventSubscribe;', $GLOBALS['TL_DCA']['tl_calendar']['palettes']['default']);
+
+$GLOBALS['TL_DCA']['tl_calendar']['subpalettes']['useEventSubscribe'] = 'subscribejumpTo, mailowner, mailsystem, mailsystemname, praemailtext, postmailtext';
 
 /**
  * Jump zur Page mit dem Anmelde-Formular
  */
 
+$GLOBALS['TL_DCA']['tl_calendar']['fields']['useEventSubscribe'] = array
+(
+	'label'                   => &$GLOBALS['TL_LANG']['tl_calendar']['useEventSubscribe'],
+	'inputType'               => 'checkbox',
+	'eval'                    => array('mandatory'=>false, 'isBoolean' => true, 'submitOnChange' => true),
+	'sql'                     => "char(1) NOT NULL default ''"
+); 
+ 
 $GLOBALS['TL_DCA']['tl_calendar']['fields']['subscribejumpTo'] = array
 (
 	'label'                   => &$GLOBALS['TL_LANG']['tl_calendar']['subscribejumpTo'],

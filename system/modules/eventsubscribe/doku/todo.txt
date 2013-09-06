@@ -1,3 +1,19 @@
 Zukünftig: Dafür Interface in zwei Ebenen aufteilen:
 1. Ebene: Auflistung aller Events, Konfiguration für jedes Event individuell?
 2. Ebene: Auflistung aller Anmeldungen für das Event
+
+###
+
+In den einzelnen Events den Anmeldeschluss ausblenden, wenn im Kalendar useEventSubscribe deaktiviert ist.
+
+###
+
+Spalte mit der Anzahl der maximalen Anmeldungen.
+
+###
+
+Im Backend eine Verwaltung, um z.B. erweiterte Besätigungen für die Teilname, wie z.B. die Benachrichtigung über den Zahlungseingang, automatisiert verschicken zu können.
+
+###
+
+Anmeldeschluss mit Angeben

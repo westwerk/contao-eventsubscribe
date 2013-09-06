@@ -47,7 +47,7 @@ class EventSubscribe extends \System
 			
 			//Aus der eventId das richtige Event ermitteln (für benutzerfreundlichere Ausgaben)
 			$event = $this->Database
-						->prepare("SELECT title FROM tl_calendar_events WHERE id = ?")
+						->prepare("SELECT * FROM tl_calendar_events WHERE id = ?")
 						->limit(1)
 						->execute($arrPost['eventId']);
 			
@@ -61,15 +61,8 @@ class EventSubscribe extends \System
 			$newMailOwner = new Email();
 			$newMailOwner->fromName = $metamail->mailsystemname;		
 			$newMailOwner->from = $metamail->mailsystem;			
-			$newMailOwner->subject = 'Anmeldung für das Event: '.$event->title.'';
-			$newMailOwner->text = 'Sie haben eine neue Anmeldung für das folgende Event: '.$event->title.'
-			
-			Name: '.$arrPost['name'].'
-			Straße: '.$arrPost['street'].'
-			PLZ: '.$arrPost['zip'].'
-			Stadt: '.$arrPost['city'].'
-			Telefon: '.$arrPost['fon'].'
-			E-Mail: '.$arrPost['email'].'';
+			$newMailOwner->subject = 'Anmeldung für das Event: '.$event->title;
+			$newMailOwner->text = "Sie haben eine neue Anmeldung für das folgende Event:\r\r".$event->title."\r\rName: ".$arrPost['name']."\rStraße: ".$arrPost['street']."\rPLZ: ".$arrPost['zip']."\rStadt: ".$arrPost['city']."\rTelefon: ".$arrPost['fon']."\rE-Mail: ".$arrPost['email'];
 			$newMailOwner->sendTo($metamail->mailowner);							
 			// wir räumen im Speicher vom Server auf und löschen die Ressourcen 
 			unset($newMailOwner); 			
@@ -80,12 +73,8 @@ class EventSubscribe extends \System
 			$confirmation->from = $metamail->mailsystem;			
 			$confirmation->subject = 'Erfolgreiche Anmeldung für: '.$event->title.'';
 			$confirmation->text = $metamail->praemailtext;
-			$confirmation->text .= '\rIhre angegebenen Daten lauten:
-			Name: '.$arrPost['name'].'
-			Straße: '.$arrPost['street'].'
-			PLZ: '.$arrPost['zip'].'
-			Stadt: '.$arrPost['city'].'
-			Telefon: '.$arrPost['fon'].'';
+			$confirmation->text .= "\r\rDie wichtigsten Informationen im Überblick:\r".$event->title."\rStart: ".date('d.m.Y', $event->startDate)."\rOrt: ".$event->location_city."\r";
+			$confirmation->text .= "\rIhre angegebenen Daten lauten:\rName: ".$arrPost['name']."\rStraße: ".$arrPost['street']."\rPLZ: ".$arrPost['zip']."\rStadt: ".$arrPost['city']."\rTelefon: ".$arrPost['fon']."\r\r";
 			$confirmation->text .= $metamail->postmailtext;
 			$confirmation->sendTo($arrPost['email']);
 			// wir räumen im Speicher vom Server auf und löschen die Ressourcen 

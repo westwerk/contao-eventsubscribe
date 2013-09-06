@@ -1,3 +1,9 @@
+# Version 0.6 ~ Thomas Belkowski
+
+Beim Kalender wurden nun die zusätzlichen Felder für das EventSubscribe in eine Subpalette ausgelagert, damit diese nur bei Verwendung benutzt werden sollen.
+
+### ~ ###
+
 # Version 0.55 ~ Thomas Belkowski
 
 SimpleAjax wurde als Extension eingebunden (ALS VORAUSSETZUNG DEFINIEREN!!!) und das Dropdown mit Ajax so erweitern, dass bei der Eventauswahl direkt die richtigen Daten ausgegeben werden können. Entsprechende Platzhalter wurden eingebunden.
