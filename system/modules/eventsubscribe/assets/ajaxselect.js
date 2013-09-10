@@ -1,5 +1,5 @@
-$(function() {
-  doAjSel(document.getElementById('ctrl_26').value);
+jQuery(document).ready(function() {
+      doAjSel(document.getElementsByName('eventId')[0].value);
 });
 
 function doAjSel(val){

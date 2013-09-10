@@ -183,10 +183,10 @@ class EventSubscribe extends \System
 	{
 		$arrOptions = array();
 		
-		//DB abfrage mit allen (aktuellen) Terminen
+		//DB abfrage mit allen (aktuellen und buchbaren) Terminen. Wobei Termine als buchbar definiert sind, wenn sie in dem übergeordneten Kalender useEventSubscribe eingestellt haben. 
 		$this->import('Database');
 		$allevents = $this->Database
-						->prepare("SELECT * FROM tl_calendar_events WHERE UNIX_TIMESTAMP(NOW()) < subscribe_endDate ORDER BY startTime ASC") //UNIX_TIMESTAMP(NOW()) < startDate
+						->prepare("SELECT tlce.id, tlce.title FROM tl_calendar_events AS tlce LEFT JOIN tl_calendar AS tlc ON (tlce.pid = tlc.id) WHERE (UNIX_TIMESTAMP(NOW()) < subscribe_endDate) AND (useEventSubscribe = 1) ORDER BY startTime ASC")
 						->execute();
 						
 		if($allevents->count())

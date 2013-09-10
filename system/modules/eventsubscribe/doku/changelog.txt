@@ -1,3 +1,10 @@
+# Version 0.65 ~ Thomas Belkowski
+
+[Bugfix] Ajax onLoad fehlerfrei eingebunden & event_fullextended Template aktualisiert
+Subpalette useEventSubscibe im Kalender (seit 0.6) wird nun dafür benutzt, um in den Events einerseits das Feld "Anmeldeschluss" optional einzublenden und  wird nun auch in der Terminauswahl (Select im Formular) berücksichtigt, sodass "nicht buchbare" Termine, die sich in einem Kalender ohne "useEventSubscribe" nicht mehr mit angezeigt werden.
+
+### ~ ###
+
 # Version 0.6 ~ Thomas Belkowski
 
 Beim Kalender wurden nun die zusätzlichen Felder für das EventSubscribe in eine Subpalette ausgelagert, damit diese nur bei Verwendung benutzt werden sollen.

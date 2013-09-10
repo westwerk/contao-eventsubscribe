@@ -9,14 +9,14 @@
   <?php if($this->teaser): ?>
   	<?php echo $this->teaser; ?>
   <?php endif; ?>
-  <p><strong><?php echo date('G:i', $this->startTime) ?> Uhr bis <?php echo date('G:i', $this->endTime) ?> Uhr</strong></p>
+  <?php if($this->addTime): ?><p><strong><?php echo date('G:i', $this->startTime) ?> Uhr bis <?php echo date('G:i', $this->endTime) ?> Uhr</strong></p><?php endif; ?>
 
-  <?php if($this->field_location_street): ?>
+  <?php if(!empty($this->location_street) || !empty($this->location_street) || !empty($this->location_city)): ?>
 	<strong>Ort:</strong>
 	<p class="location">
-		<?php echo $this->field_location_name; ?><br />
-		<?php echo $this->field_location_street; ?><br />
-		<?php echo $this->field_location_zip; ?> <?php echo $this->field_location_city; ?>
+		<?php if(!empty($this->location_name)): ?><?php echo $this->location_name; ?><br /><?php endif; ?>
+		<?php if(!empty($this->location_street)): ?><?php echo $this->location_street; ?><br /><?php endif; ?>
+		<?php if(!empty($this->location_city)): ?><?php echo $this->location_zip; ?> <?php echo $this->location_city; ?><?php endif; ?>
 	</p>
   <?php endif; ?>
   

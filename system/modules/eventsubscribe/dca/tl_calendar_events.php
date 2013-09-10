@@ -8,10 +8,14 @@
  * @author  Thomas Belkowski / WESTWERK GmbH & Co. KG
  * @license LGPL
  */
+ 
+$cee = new tl_calendar_events_ext(); //Calendar_Events_Ext => CEE
+ 
+//BackEnd
+$GLOBALS['TL_DCA']['tl_calendar_events']['palettes']['default'] = str_replace('endDate','endDate'.($cee->isEventSubscribe() ? ',subscribe_endDate' : '').';{title_location},location_name,location_street,location_zip,location_city;{title_price},price_whole,price_fraction,price_info;', $GLOBALS['TL_DCA']['tl_calendar_events']['palettes']['default']);
 
- //BackEnd
-$GLOBALS['TL_DCA']['tl_calendar_events']['palettes']['default'] = str_replace('endDate','endDate,subscribe_endDate;{title_location},location_name,location_street,location_zip,location_city;{title_price},price_whole,price_fraction,price_info;', $GLOBALS['TL_DCA']['tl_calendar_events']['palettes']['default']);
-
+unset($cee);
+ 
 /*
  * Anmeldeschluss
  * Falls leer, wird einfach das Startdatum (exklusiv) des Events gewählt
@@ -70,7 +74,7 @@ $GLOBALS['TL_DCA']['tl_calendar_events']['fields']['location_city'] = array
     'exclude'           => true,
     'search'            => true,
     'inputType'         => 'text',
-    'eval'              => array('maxlength'=>255, 'tl_class'=>'w50'),
+    'eval'              => array('maxlength'=>255, 'tl_class'=>'w50', 'mandatory'=>true),
     'sql'               => "varchar(255) NOT NULL default ''"
 );
 
@@ -126,5 +130,17 @@ class tl_calendar_events_ext extends \Backend
 		}
 
 		return $varValue;
+	}
+	
+	/* Prüfen, ob EventSubscribe im übergeordneten Kalendar aktiviert wurde */
+	public function isEventSubscribe(){
+		
+		$this->import('Database');
+		$isUsed = $this->Database
+						->prepare('SELECT useEventSubscribe FROM tl_calendar AS tlc LEFT JOIN tl_calendar_events AS tlce ON (tlc.id = tlce.pid) WHERE tlce.id = ?')
+						->limit(1)
+						->execute($_GET['id']);
+						
+		return (int)$isUsed->useEventSubscribe;		
 	}
 }
