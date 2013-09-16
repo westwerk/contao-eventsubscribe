@@ -8,13 +8,11 @@
  * @author  Thomas Belkowski / WESTWERK GmbH & Co. KG
  * @license LGPL
  */
- 
-$cee = new tl_calendar_events_ext(); //Calendar_Events_Ext => CEE
+
+$GLOBALS['TL_DCA']['tl_calendar_events']['config']['onload_callback'][] = array('tl_calendar_events_ext','isEventSubscribe');
  
 //BackEnd
-$GLOBALS['TL_DCA']['tl_calendar_events']['palettes']['default'] = str_replace('endDate','endDate'.($cee->isEventSubscribe() ? ',subscribe_endDate' : '').';{title_location},location_name,location_street,location_zip,location_city;{title_price},price_whole,price_fraction,price_info;', $GLOBALS['TL_DCA']['tl_calendar_events']['palettes']['default']);
-
-unset($cee);
+$GLOBALS['TL_DCA']['tl_calendar_events']['palettes']['default'] = str_replace('endDate','endDate;{title_location},location_name,location_street,location_zip,location_city;{title_price},price_whole,price_fraction,price_info;', $GLOBALS['TL_DCA']['tl_calendar_events']['palettes']['default']);
  
 /*
  * Anmeldeschluss
@@ -28,7 +26,7 @@ $GLOBALS['TL_DCA']['tl_calendar_events']['fields']['subscribe_endDate'] = array
 			'exclude'                 => true,
 			'inputType'               => 'text',
 			'eval'                    => array('rgxp'=>'date', 'doNotCopy'=>true, 'datepicker'=>true, 'tl_class'=>'w50 wizard'),
-			'save_callback' => array
+			'save_callback' 		  => array
 			(
 				array('tl_calendar_events_ext', 'setEmptyEndDate')
 			),
@@ -140,7 +138,13 @@ class tl_calendar_events_ext extends \Backend
 						->prepare('SELECT useEventSubscribe FROM tl_calendar AS tlc LEFT JOIN tl_calendar_events AS tlce ON (tlc.id = tlce.pid) WHERE tlce.id = ?')
 						->limit(1)
 						->execute($_GET['id']);
-						
-		return (int)$isUsed->useEventSubscribe;		
+		
+		if((int)$isUsed->useEventSubscribe){			
+			$GLOBALS['TL_DCA']['tl_calendar_events']['palettes']['default'] = str_replace('endDate','endDate,subscribe_endDate',$GLOBALS['TL_DCA']['tl_calendar_events']['palettes']['default']);
+			return true;
+		}else{
+			return false;
+		}
+		
 	}
 }
