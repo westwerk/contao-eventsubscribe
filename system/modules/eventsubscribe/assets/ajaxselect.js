@@ -18,6 +18,8 @@ function doAjSel(val){
 				$('span.ajaxField_location_city').replaceWith('<span class="ajaxField_location_city">' + event['field_location_city'] + '</span>');
 				$('span.ajaxPrice').replaceWith('<span class="ajaxPrice">' + event['price'] + ' € ' + '</span>');
 				$('span.ajaxPriceInfo').replaceWith('<span class="ajaxPriceInfo"> ' + event['price_info'] + '</span>');
+				$('span.ajaxRegistrations').replaceWith('<span class="ajaxRegistrations"> ' + event['registrations'] + '</span>');
+				$('span.ajaxMaximum_number').replaceWith('<span class="ajaxMaximum_number"> ' + event['maximum_number'] + '</span>');
 			}else{
 				alert(event['error']);
 			}			

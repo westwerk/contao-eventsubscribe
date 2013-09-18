@@ -20,6 +20,13 @@
 	</p>
   <?php endif; ?>
   
+  <?php if($this->maximum_number): ?>
+	<strong>Bisherige Anmeldungen:</strong>
+	<p class="registrations">
+		<?php echo $this->registrations; ?> / <?php echo $this->maximum_number; ?>
+	</p>
+  <?php endif; ?>
+  
   <?php if($this->price_whole): ?>
 	<strong>Kosten:</strong>
 	<p class="price">

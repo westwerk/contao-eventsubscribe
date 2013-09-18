@@ -31,7 +31,25 @@ $GLOBALS['TL_DCA']['tl_calendar_events']['fields']['subscribe_endDate'] = array
 				array('tl_calendar_events_ext', 'setEmptyEndDate')
 			),
 			'sql'                     => "int(10) unsigned NULL"
-); 
+);
+
+$GLOBALS['TL_DCA']['tl_calendar_events']['fields']['maximum_number'] = array
+(
+	'label'				=>	$GLOBALS['TL_LANG']['tl_calendar_events']['maximum_number'],
+	'exclude'			=>	true,
+	'inputType'			=>	'text',
+	'eval'				=>	array('maxlength'=>8, 'tl_class' => 'w50'),
+	'sql'				=>	"int(8) NOT NULL default '0'"
+);
+
+$GLOBALS['TL_DCA']['tl_calendar_events']['fields']['registrations'] = array
+(
+	'label'				=>	$GLOBALS['TL_LANG']['tl_calendar_events']['registrations'],
+	'exclude'			=>	true,
+	'inputType'			=>	'text',
+	'eval'				=>	array('maxlength'=>8, 'tl_class' => 'w50'),
+	'sql'				=>	"int(8) NOT NULL default '0'"
+);
  
 /**
  * Location
@@ -140,7 +158,7 @@ class tl_calendar_events_ext extends \Backend
 						->execute($_GET['id']);
 		
 		if((int)$isUsed->useEventSubscribe){			
-			$GLOBALS['TL_DCA']['tl_calendar_events']['palettes']['default'] = str_replace('endDate','endDate,subscribe_endDate',$GLOBALS['TL_DCA']['tl_calendar_events']['palettes']['default']);
+			$GLOBALS['TL_DCA']['tl_calendar_events']['palettes']['default'] = str_replace('endDate','endDate,subscribe_endDate;{title_registration},maximum_number,registrations',$GLOBALS['TL_DCA']['tl_calendar_events']['palettes']['default']);
 			return true;
 		}else{
 			return false;

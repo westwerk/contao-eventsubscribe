@@ -30,7 +30,9 @@ class EventSubscribeAjax extends \System{
 				$result['price'] = "";
 				$result['price'] .= $res->price_whole.",";
 				if($res->price_fraction <= 9){$result['price'] .= "0".$res->price_fraction;}else{$result['price'] .= $res->price_fraction;}
-				$result['price_info'] = $res->price_info;				
+				$result['price_info'] = $res->price_info;
+				$result['registrations'] = $res->registrations;
+				if($res->maximum_number > 0){$result['maximum_number'] = $res->maximum_number;}else{$result['maximum_number'] = 'Unbeschränkt';}
 			}else{
 				$result['error'] = "Das angeforderte Event wurde nicht gefunden.";
 			}			

@@ -43,7 +43,12 @@ class EventSubscribe extends \System
 					'email' => $arrPost['email'],
 					'eventId' => $arrPost['eventId']
 				))
-				->execute();				
+				->execute();
+
+			//Counter mit der Anzahl der aktuellen Anmeldungen für das Event erhöhen
+			$this->Database
+				->prepare("UPDATE tl_calendar_events SET registrations = registrations +1 WHERE id = ?")
+				->execute($arrPost['eventId']);
 			
 			//Aus der eventId das richtige Event ermitteln (für benutzerfreundlichere Ausgaben)
 			$event = $this->Database
@@ -94,49 +99,61 @@ class EventSubscribe extends \System
 					->execute(substr($intId,10)); //die ersten 10 Zeichen sind: auto_form_
 					
 		if($form->count())		
-		{			
-			switch($form->eventsubscribe_mode){		
-				case 1:
-				if($objWidget->name == 'name')
-				{
-					//Prüfen, ob dieser Name bereits mit der entsprechenden Id vorhanden ist 
-					$objTest = $this->Database->prepare("SELECT * FROM tl_calendar_events_subscribe WHERE name=? AND eventId=?")
-								->limit(1)                        
-								->execute(\Input::post('name'), \Input::post('eventId'));
-					if ($objTest->count())
+		{	
+			//Prüfen, ob noch ein Platz frei ist
+			$reg = $this->Database
+						->prepare("SELECT maximum_number, registrations FROM tl_calendar_events WHERE eventId = ?")
+						->limit(1)
+						->execute(\Input::post('eventId'));
+			
+			if(($reg->maximum_number == 0) || (($reg->maximum_number - $reg->registrations) > 0))
+			{
+				switch($form->eventsubscribe_mode){		
+					case 1:
+					if($objWidget->name == 'name')
 					{
-						$objWidget->addError('Dieser Nutzer ist bereits angemeldet.');							
-					} 																		
-				}
-				break;
-					
-				case 2:
-				if($objWidget->name == 'email')
-				{
-					//Prüfen, ob diese Email bereits mit der entsprechenden Id vorhanden ist 
-					$objTest = $this->Database->prepare("SELECT * FROM tl_calendar_events_subscribe WHERE email=? AND eventId=?")
-								->limit(1)                        
-								->execute(\Input::post('email'), \Input::post('eventId'));
-					if ($objTest->count())
+						//Prüfen, ob dieser Name bereits mit der entsprechenden Id vorhanden ist 
+						$objTest = $this->Database->prepare("SELECT * FROM tl_calendar_events_subscribe WHERE name=? AND eventId=?")
+									->limit(1)                        
+									->execute(\Input::post('name'), \Input::post('eventId'));
+						if ($objTest->count())
+						{
+							$objWidget->addError('Dieser Nutzer ist bereits angemeldet.');							
+						} 																		
+					}
+					break;
+						
+					case 2:
+					if($objWidget->name == 'email')
 					{
-						$objWidget->addError('Diese E-Mail wurde bereits angemeldet.');
-					} 																		
-				}
-				break;
-					
-				case 3:
-				if(($objWidget->name == 'name') || ($objWidget->name == 'email'))
-				{
-					//Prüfen, ob dieser Name + diese Email bereits mit der entsprechenden Id vorhanden ist 
-					$objTest = $this->Database->prepare("SELECT * FROM tl_calendar_events_subscribe WHERE name=? AND email=? AND eventId=?")
-								->limit(1)                        
-								->execute(\Input::post('name'), \Input::post('email'), \Input::post('eventId'));
-					if ($objTest->count())
+						//Prüfen, ob diese Email bereits mit der entsprechenden Id vorhanden ist 
+						$objTest = $this->Database->prepare("SELECT * FROM tl_calendar_events_subscribe WHERE email=? AND eventId=?")
+									->limit(1)                        
+									->execute(\Input::post('email'), \Input::post('eventId'));
+						if ($objTest->count())
+						{
+							$objWidget->addError('Diese E-Mail wurde bereits angemeldet.');
+						} 																		
+					}
+					break;
+						
+					case 3:
+					if(($objWidget->name == 'name') || ($objWidget->name == 'email'))
 					{
-						$objWidget->addError('Diese Kombination aus Nutzer & E-Mail ist bereits angemeldet.');							
-					} 																		
+						//Prüfen, ob dieser Name + diese Email bereits mit der entsprechenden Id vorhanden ist 
+						$objTest = $this->Database->prepare("SELECT * FROM tl_calendar_events_subscribe WHERE name=? AND email=? AND eventId=?")
+									->limit(1)                        
+									->execute(\Input::post('name'), \Input::post('email'), \Input::post('eventId'));
+						if ($objTest->count())
+						{
+							$objWidget->addError('Diese Kombination aus Nutzer & E-Mail ist bereits angemeldet.');							
+						} 																		
+					}
+					break;
 				}
-				break;
+			}else{
+				//Error, Anmeldung nicht möglich
+				//throw new \Exception('Leider sind alle Plätze vergeben.');
 			}
 		}
 		return $objWidget;		 
@@ -186,7 +203,7 @@ class EventSubscribe extends \System
 		//DB abfrage mit allen (aktuellen und buchbaren) Terminen. Wobei Termine als buchbar definiert sind, wenn sie in dem übergeordneten Kalender useEventSubscribe eingestellt haben. 
 		$this->import('Database');
 		$allevents = $this->Database
-						->prepare("SELECT tlce.id, tlce.title FROM tl_calendar_events AS tlce LEFT JOIN tl_calendar AS tlc ON (tlce.pid = tlc.id) WHERE (UNIX_TIMESTAMP(NOW()) < subscribe_endDate) AND (useEventSubscribe = 1) ORDER BY startTime ASC")
+						->prepare("SELECT tlce.id, tlce.title FROM tl_calendar_events AS tlce LEFT JOIN tl_calendar AS tlc ON (tlce.pid = tlc.id) WHERE (UNIX_TIMESTAMP(NOW()) < subscribe_endDate) AND (useEventSubscribe = 1) AND ((tlce.maximum_number = 0) OR (tlce.maximum_number - tlce.registrations > 0)) ORDER BY startTime ASC")
 						->execute();
 						
 		if($allevents->count())

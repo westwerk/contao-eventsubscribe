@@ -1,3 +1,11 @@
+# Version 0.70 ~ Thomas Belkowski
+
+Events wurden zwei Felder hinzugefügt: 
+Maximale Anzahl an Anmeldungen und die aktuelle Anzahl der Anmeldungen.
+Bei einer Anmeldung wird der Zähler entsprechend hochgesetzt. Wurde das Limit erreicht, wird das Event nicht mehr als auswählbare Option eingeblendet.
+
+### ~ ###
+
 # Version 0.65 ~ Thomas Belkowski
 
 [Bugfix] Ajax onLoad fehlerfrei eingebunden & event_fullextended Template aktualisiert
