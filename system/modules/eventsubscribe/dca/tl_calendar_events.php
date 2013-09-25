@@ -124,12 +124,6 @@ $GLOBALS['TL_DCA']['tl_calendar_events']['fields']['price_info'] = array
     'sql'               => "varchar(128) NOT NULL default ''"
 );
 
-/**
- * bestehende, störende Felder löschen (sollte sauberer gelöst werden...)
- */
- 
-$GLOBALS['TL_DCA']['tl_calendar_events']['fields']['location'] = false;
-
 class tl_calendar_events_ext extends \Backend
 {
 
